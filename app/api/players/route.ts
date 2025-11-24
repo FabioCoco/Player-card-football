@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { db } from '@/lib/prisma';
 
 export async function GET() {
   try {
-    const players = await prisma.player.findMany({
+    const players = await db.player.findMany({
       orderBy: { createdAt: 'desc' },
     });
     return NextResponse.json(players);
@@ -19,7 +19,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const player = await prisma.player.create({
+    const player = await db.player.create({
       data: {
         name: body.name,
         position: body.position,

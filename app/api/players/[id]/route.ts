@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { db } from '@/lib/db';
 
 export async function GET(
   request: NextRequest,
@@ -7,7 +7,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const player = await prisma.player.findUnique({
+    const player = await db.player.findUnique({
       where: { id },
     });
     if (!player) {
@@ -34,7 +34,7 @@ export async function PUT(
     const { id } = await params;
     const body = await request.json();
     
-    const existingPlayer = await prisma.player.findUnique({
+    const existingPlayer = await db.player.findUnique({
       where: { id },
     });
     
@@ -45,7 +45,7 @@ export async function PUT(
       );
     }
 
-    const player = await prisma.player.update({
+    const player = await db.player.update({
       where: { id },
       data: {
         name: body.name,
@@ -81,7 +81,7 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
-    const player = await prisma.player.findUnique({
+    const player = await db.player.findUnique({
       where: { id },
     });
     
@@ -92,7 +92,7 @@ export async function DELETE(
       );
     }
 
-    await prisma.player.delete({
+    await db.player.delete({
       where: { id },
     });
     return NextResponse.json({ message: 'Player deleted successfully' });
